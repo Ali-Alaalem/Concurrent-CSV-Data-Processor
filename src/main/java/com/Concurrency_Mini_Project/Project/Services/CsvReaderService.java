@@ -22,6 +22,10 @@ public class CsvReaderService {
 
         try {
             Scanner scanner = new Scanner(file);
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+            }
+
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] user = line.split(",");
