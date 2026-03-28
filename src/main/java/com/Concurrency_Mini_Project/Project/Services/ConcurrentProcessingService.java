@@ -10,14 +10,18 @@ import java.util.concurrent.Semaphore;
 
 @Service
 public class ConcurrentProcessingService {
-
+    private final CsvReaderService csvReaderService;
     private final SalaryCalcSarvice salaryCalcSarvice;
 
-    public ConcurrentProcessingService(SalaryCalcSarvice salaryCalcSarvice) {
+    public ConcurrentProcessingService(CsvReaderService csvReaderService, SalaryCalcSarvice salaryCalcSarvice) {
+        this.csvReaderService = csvReaderService;
         this.salaryCalcSarvice = salaryCalcSarvice;
     }
 
-    public void processSalaries(List<Employee> employees) {
+    public List<Employee> processSalaries() {
+
+        List<Employee> employees = csvReaderService.readCSV();
+
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Semaphore semaphore = new Semaphore(2);
 
@@ -45,6 +49,6 @@ public class ConcurrentProcessingService {
             });
         }
         executor.shutdown();
-
+        return employees;
     }
 }
