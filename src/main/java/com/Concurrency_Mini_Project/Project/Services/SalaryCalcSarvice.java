@@ -21,12 +21,11 @@ public class SalaryCalcSarvice {
         }else if (role.equalsIgnoreCase("Employee")){
             newSalary += currentSalary * 0.01;
         }
-
+// A new thing i learned Preiod.between() will return the full period for an employee like how many years and month and days he worked and by using .getYears it will return the years.
         int yearsWorked = Period.between(joinedDate, LocalDate.now()).getYears();
         if (yearsWorked >= 1) {
             newSalary += currentSalary * (0.02 * yearsWorked);
         }
-
 return newSalary;
     }
 }
