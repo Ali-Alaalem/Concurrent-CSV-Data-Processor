@@ -12,11 +12,6 @@ public class ProjectApplication {
 
 	public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
-
-        CsvReaderService reader = new CsvReaderService();
-        List<Employee> employees = reader.readCSV();
-        employees.forEach(System.out::println);
-
 	}
 
 }
