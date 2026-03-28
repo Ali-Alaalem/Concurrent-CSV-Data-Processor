@@ -21,5 +21,25 @@ public class ConcurrentProcessingService {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Semaphore semaphore = new Semaphore(2);
 
+        for (Employee emp : employees) {
+            executor.submit(() -> {
+                try {
+                    semaphore.acquire();
+                    double newSalary = salaryCalcSarvice.calculateNewSalary(
+                            emp.getSalary(),
+                            emp.getRole(),
+                            emp.getProjectCompletionPercentage(),
+                            emp.getJoinedDate()
+                    );
+                    emp.setSalary(newSalary);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    semaphore.release();
+                }
+            });
+        }
+        executor.shutdown();
+
     }
 }
