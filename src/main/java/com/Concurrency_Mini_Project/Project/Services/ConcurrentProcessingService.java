@@ -31,7 +31,9 @@ public class ConcurrentProcessingService {
                             emp.getProjectCompletionPercentage(),
                             emp.getJoinedDate()
                     );
-                    emp.setSalary(newSalary);
+                    synchronized (emp) {
+                        emp.setSalary(newSalary);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
