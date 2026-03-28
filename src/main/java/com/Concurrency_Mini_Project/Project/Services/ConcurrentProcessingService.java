@@ -32,6 +32,9 @@ public class ConcurrentProcessingService {
                             emp.getJoinedDate()
                     );
                     synchronized (emp) {
+                        System.out.println("Employee: " + emp.getName() +
+                                " | Old Salary: " + emp.getSalary() +
+                                " | New Salary: " + newSalary);
                         emp.setSalary(newSalary);
                     }
                 } catch (InterruptedException e) {
