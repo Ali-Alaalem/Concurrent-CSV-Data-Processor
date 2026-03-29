@@ -35,7 +35,9 @@ public class ConcurrentProcessingService {
                             emp.getProjectCompletionPercentage(),
                             emp.getJoinedDate()
                     );
-                    synchronized (emp) {
+                    //i changed here synchronized (emp) to synchronized (System.out) because when i review what i did i catch that
+                    //each emp will be assigned to a thread so no conflict between them but in the printing they will try to print all of them so its shared between them.
+                    synchronized (System.out) {
                         System.out.println("Employee: " + emp.getName() +
                                 " | Old Salary: " + emp.getSalary() +
                                 " | New Salary: " + newSalary);
@@ -49,6 +51,17 @@ public class ConcurrentProcessingService {
             });
         }
         executor.shutdown();
+//here also this is a new thing i learned which is await termination which will.
+// do not continue this method until all threads inside this executor are finished.
+//so it will wait maximum 1 minute. If threads finish earlier it will continue.
+//and it should be after the shutdown if it was before it, it will wait forever.
+
+        try {
+            executor.awaitTermination(1, java.util.concurrent.TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         return employees;
     }
 }
